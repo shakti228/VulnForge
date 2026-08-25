@@ -6,6 +6,10 @@ from vulnforge.analyzers.local import LocalProjectAnalyzer
 from vulnforge.dashboard.dashboard import build_dashboard
 from vulnforge.reporting.export import export_json
 from vulnforge.scanner.command import run_scan
+from vulnforge.checks.configured import build_configured_registry
+from vulnforge.config.scanner import load_scanner_config
+from vulnforge.checks.configured import build_configured_registry
+from vulnforge.config.scanner import load_scanner_config
 
 VERSION = "3.0.0"
 
@@ -23,6 +27,7 @@ def main():
     scan_parser = sub.add_parser("scan", help="Run authorized passive target scan")
     scan_parser.add_argument("target", help="Authorized HTTP/HTTPS target")
     scan_parser.add_argument("--allow", action="append", default=[], help="Allowed hostname (repeatable)")
+    scan_parser.add_argument("--check", action="append", default=None, help="Enable a specific check (repeatable)")
 
     args = parser.parse_args()
 
@@ -42,7 +47,15 @@ def main():
 
     if args.command == "scan":
         try:
-            result = run_scan(args.target, args.allow)
+            config = load_scanner_config()
+            allowed_hosts = args.allow or config["allowed_hosts"]
+            checks = args.check if args.check is not None else config["checks"]
+            registry = build_configured_registry(checks)
+            result = run_scan(
+                args.target,
+                allowed_hosts,
+                registry=registry,
+            )
         except (ValueError, PermissionError) as exc:
             parser.error(str(exc))
 
