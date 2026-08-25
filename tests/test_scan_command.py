@@ -1,15 +1,23 @@
-from vulnforge.commands.scan import scan
+from vulnforge.scanner.command import run_scan
 
 def test_scan_command(monkeypatch):
     monkeypatch.setattr(
-        "vulnforge.commands.scan.run_configured_target",
-        lambda target, config_path="vulnforge.json": {
-            "target": target,
-            "finding_count": 0,
-            "risk_score": 0,
+        "vulnforge.scanner.pipeline.collect_http_metadata",
+        lambda target: {
+            "url": target.url,
+            "status": 200,
+            "headers": {
+                "strict-transport-security": "max-age=31536000",
+                "x-content-type-options": "nosniff",
+            },
         },
     )
 
-    result = scan("https://example.com")
+    result = run_scan(
+        "https://example.com",
+        ["example.com"],
+    )
+
     assert result["target"] == "https://example.com"
+    assert result["finding_count"] == 0
     assert result["risk_score"] == 0

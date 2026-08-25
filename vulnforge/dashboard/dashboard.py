@@ -37,7 +37,9 @@ pre {{ white-space: pre-wrap; }}
 <div class="card">
 <b>Project:</b> {report.get("project", "Unknown")}<br>
 <b>Version:</b> {report.get("version", "Unknown")}<br>
-<b>Files:</b> {report.get("file_count", 0)}
+<b>Files:</b> {report.get("file_count", 0)}<br>
+<b>Target:</b> {report.get("target", "Local project")}<br>
+<b>Risk Score:</b> {report.get("risk_score", 0)}
 </div>
 
 <div class="grid">
