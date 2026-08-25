@@ -22,7 +22,7 @@ def main():
         version=f"{config.app_name} {config.version}",
     )
 
-    parser.add_argument("command", nargs="?", choices=["scan"], help="Run an authorized security analysis")
+    parser.add_argument("command", nargs="?", choices=["scan","analyze"], help="Run an authorized security analysis")
 
     parser.add_argument(
         "--about",
@@ -31,6 +31,10 @@ def main():
     )
 
     args = parser.parse_args()
+
+    if args.command == "analyze":
+        from vulnforge.analyzers.local import LocalProjectAnalyzer
+        result=LocalProjectAnalyzer().analyze("."); logger.info("Local project: %s | Files: %s", result["project"], result["files"]); logger.info("File types: %s", result["extensions"]); return
 
     if args.command == "scan":
         engine = VulnForgeEngine(); engine.registry.discover(); result = engine.run(); logger.info(result.message); [logger.info("[%s] %s — %s", f.severity, f.title, f.description) for f in result.findings]; JSONReporter().write(result.findings); HTMLReporter().write(result.findings); logger.info("Reports generated successfully"); return
