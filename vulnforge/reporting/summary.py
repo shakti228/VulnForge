@@ -1,4 +1,5 @@
 from collections import Counter
+from vulnforge.risk.scoring import calculate_risk
 
 def build_summary(findings):
     if isinstance(findings, dict):
@@ -28,4 +29,5 @@ def build_report(analysis):
         report = {"tool": "VulnForge", "author": "VYZENTRA", "file_count": len(findings), "findings": findings}
     report["findings"] = findings if isinstance(findings, list) else []
     report["summary"] = build_summary(report["findings"])
+    report["risk_score"] = calculate_risk(report["findings"])
     return report
