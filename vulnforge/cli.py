@@ -3,7 +3,6 @@ import argparse
 from vulnforge.config import get_config
 from vulnforge.core.engine import VulnForgeEngine
 from vulnforge.logger import setup_logger
-from vulnforge.plugins.test_plugin import TestPlugin
 from vulnforge.reporters.json_reporter import JSONReporter
 from vulnforge.reporters.html_reporter import HTMLReporter
 
@@ -23,6 +22,8 @@ def main():
         version=f"{config.app_name} {config.version}",
     )
 
+    parser.add_argument("command", nargs="?", choices=["scan"], help="Run an authorized security analysis")
+
     parser.add_argument(
         "--about",
         action="store_true",
@@ -30,6 +31,9 @@ def main():
     )
 
     args = parser.parse_args()
+
+    if args.command == "scan":
+        engine = VulnForgeEngine(); engine.registry.discover(); result = engine.run(); logger.info(result.message); [logger.info("[%s] %s — %s", f.severity, f.title, f.description) for f in result.findings]; JSONReporter().write(result.findings); HTMLReporter().write(result.findings); logger.info("Reports generated successfully"); return
 
     if args.about:
         print()

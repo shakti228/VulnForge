@@ -22,7 +22,10 @@ class VulnForgeEngine:
         findings = []
 
         for plugin in self.registry.get_all():
-            findings.extend(plugin.run())
+            try:
+                findings.extend(plugin.run())
+            except Exception as exc:
+                findings.append(Finding(title=f"Plugin Error: {plugin.name}", severity="ERROR", description=str(exc), remediation="Review the plugin implementation.", confidence="HIGH"))
 
         return EngineResult(
             status="success",

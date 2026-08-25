@@ -10,6 +10,7 @@ class HTMLReporter:
     def write(self, findings: list[Finding], output: str = "reports/report.html") -> Path:
         path = Path(output)
         path.parent.mkdir(parents=True, exist_ok=True)
+        summary = {level: sum(1 for f in findings if f.severity.upper() == level) for level in ["INFO","LOW","MEDIUM","HIGH","CRITICAL"]}
 
         rows = "".join(
             f"""
@@ -78,6 +79,7 @@ footer {{
 <h1>VulnForge Security Report</h1>
 <p>Security Research & Analysis Platform</p>
 <p>Findings: {len(findings)}</p>
+<p>INFO: {summary["INFO"]} | LOW: {summary["LOW"]} | MEDIUM: {summary["MEDIUM"]} | HIGH: {summary["HIGH"]} | CRITICAL: {summary["CRITICAL"]}</p>
 </header>
 
 <table>

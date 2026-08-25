@@ -11,11 +11,13 @@ class JSONReporter:
         path = Path(output)
         path.parent.mkdir(parents=True, exist_ok=True)
 
-        data = {
+        summary = {level: sum(1 for f in findings if f.severity.upper() == level) for level in ["INFO","LOW","MEDIUM","HIGH","CRITICAL"]}; summary = {level: sum(1 for f in findings if f.severity.upper() == level) for level in ["INFO","LOW","MEDIUM","HIGH","CRITICAL"]}; data = {
             "tool": "VulnForge",
             "version": "0.1.0",
             "author": "VYZENTRA",
             "finding_count": len(findings),
+            "severity_summary": summary,
+            "severity_summary": summary,
             "findings": [finding.to_dict() for finding in findings],
         }
 

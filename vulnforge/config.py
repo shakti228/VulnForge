@@ -1,13 +1,11 @@
 from dataclasses import dataclass
 
-
-@dataclass
-class VulnForgeConfig:
+@dataclass(frozen=True)
+class Config:
     app_name: str = "VulnForge"
-    version: str = "0.1.0"
+    version: str = "0.2.0"
     author: str = "VYZENTRA"
-    log_level: str = "INFO"
+    report_dir: str = "reports"
 
-
-def get_config() -> VulnForgeConfig:
-    return VulnForgeConfig()
+def get_config() -> Config:
+    return Config()
