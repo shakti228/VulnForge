@@ -25,3 +25,10 @@ def test_finding_metadata():
     assert finding.timestamp
     assert finding.confidence == "HIGH"
     assert finding.remediation
+
+
+def test_local_analyzer():
+    from vulnforge.analyzers.local import LocalProjectAnalyzer
+    r=LocalProjectAnalyzer().analyze(".")
+    assert r["project"] == "VulnForge"
+    assert r["files"] >= 1

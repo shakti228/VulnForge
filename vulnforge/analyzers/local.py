@@ -17,4 +17,5 @@ class LocalProjectAnalyzer:
             "path": str(root),
             "files": len(files),
             "extensions": extensions,
+            "warnings": ["No security verdict is produced by this analyzer; it only inventories local project files."],
         }
