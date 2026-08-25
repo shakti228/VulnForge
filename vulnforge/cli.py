@@ -6,7 +6,7 @@ from vulnforge.analyzers.local import LocalProjectAnalyzer
 from vulnforge.dashboard.dashboard import build_dashboard
 from vulnforge.reporting.export import export_json
 
-VERSION = "0.9.0"
+VERSION = "2.1.0"
 
 def main():
     parser = argparse.ArgumentParser(
