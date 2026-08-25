@@ -6,7 +6,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![Version](https://img.shields.io/badge/Version-0.1.0-green)
-![Status](https://img.shields.io/badge/Status-Development-orange)
+![Status](https://img.shields.io/badge/Status-v0.2.0-blue)
 
 ## Overview
 
